@@ -1,5 +1,11 @@
+import 'dart:io';
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 // import 'package:pdf/pdf.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
 
 void main() {
   runApp(MyApp());
@@ -20,6 +26,7 @@ class PDFGenerator extends StatefulWidget {
 }
 
 class _PDFGeneratorState extends State<PDFGenerator> {
+  final pdf = pw.Document();
   final textController = TextEditingController();
 
   @override
@@ -39,7 +46,17 @@ class _PDFGeneratorState extends State<PDFGenerator> {
             ),
             SizedBox(height: 16),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () async {
+                pdf.addPage(pw.Page(
+      pageFormat: PdfPageFormat.a4,
+      build: (pw.Context context) {
+        return pw.Text(textController.text); // Center
+      })); 
+      final output = await getExternalStorageDirectory();
+      print(output);
+    final file = File('${output?.path}/myPDF${Random().nextInt(10) + 100}.pdf');
+    await file.writeAsBytes(await pdf.save());
+              },
               child: Text('Generate PDF'),
             ),
           ],
