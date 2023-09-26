@@ -48,14 +48,15 @@ class _PDFGeneratorState extends State<PDFGenerator> {
             ElevatedButton(
               onPressed: () async {
                 pdf.addPage(pw.Page(
-      pageFormat: PdfPageFormat.a4,
-      build: (pw.Context context) {
-        return pw.Text(textController.text); // Center
-      })); 
-      final output = await getExternalStorageDirectory();
-      print(output);
-    final file = File('${output?.path}/myPDF${Random().nextInt(10) + 100}.pdf');
-    await file.writeAsBytes(await pdf.save());
+                    pageFormat: PdfPageFormat.a4,
+                    build: (pw.Context context) {
+                      return pw.Text(textController.text); // Center
+                    }));
+                final output = await getExternalStorageDirectory();
+                print(output);
+                final file = File(
+                    '${output?.path}/myPDF${Random().nextInt(10) + 100}.pdf');
+                await file.writeAsBytes(await pdf.save());
               },
               child: Text('Generate PDF'),
             ),
